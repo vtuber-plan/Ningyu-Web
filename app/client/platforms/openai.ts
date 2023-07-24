@@ -24,7 +24,7 @@ export interface OpenAIListModelResponse {
 }
 
 export class ChatGPTApi implements LLMApi {
-  private disableListModels = true;
+  private disableListModels = false;
 
   path(path: string): string {
     let openaiUrl = useAccessStore.getState().openaiUrl;
@@ -261,7 +261,8 @@ export class ChatGPTApi implements LLMApi {
     });
 
     const resJson = (await res.json()) as OpenAIListModelResponse;
-    const chatModels = resJson.data?.filter((m) => m.id.startsWith("gpt-"));
+    // const chatModels = resJson.data?.filter((m) => m.id.startsWith("gpt-"));
+    const chatModels = resJson.data?.filter((m) => m);
     console.log("[Models]", chatModels);
 
     if (!chatModels) {

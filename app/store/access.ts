@@ -79,11 +79,11 @@ export const useAccessStore = create<AccessControlStore>()(
             console.log("[Config] got config from server", res);
             set(() => ({ ...res }));
 
-            if (res.disableGPT4) {
-              DEFAULT_MODELS.forEach(
-                (m: any) => (m.available = !m.name.startsWith("gpt-4")),
-              );
-            }
+            DEFAULT_MODELS.forEach((m: any) => {
+              if (res.disableGPT4 && m.name.startsWith("gpt-4")) {
+                m.available = false;
+              }
+            });
           })
           .catch(() => {
             console.error("[Config] failed to fetch config");
